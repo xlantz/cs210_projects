@@ -101,22 +101,22 @@ class ListingActivity : Activity {
 
         Console.WriteLine("That's the end of the listing activity.");
 
-    public void GetRandomPrompt() {
-        return;
-    }
+        public void GetRandomPrompt() {
+            return;
+        }
 
-    public List<string> GetListFromUser() {
-        List<string> userlist = new List<string>{
-            "Who are people that you appreciate?",
-            "What are personal strengths of yours?",
-            "Who are people that you have helped this week?",
-            "When have you felt the Holy Ghost this month?",
-            "Who are some of your personal heroes?"
-        };
-        return userlist;
+        public List<string> GetListFromUser() {
+            List<string> userlist = new List<string>{
+                "Who are people that you appreciate?",
+                "What are personal strengths of yours?",
+                "Who are people that you have helped this week?",
+                "When have you felt the Holy Ghost this month?",
+                "Who are some of your personal heroes?"
+            };
+            return userlist;
+        }
     }
 }
-
 class ReflectingActivity : Activity {
     Random _random;
     List<string> _prompts = new List<string> {
