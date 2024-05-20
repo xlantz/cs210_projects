@@ -1,7 +1,5 @@
 using System;
 
-Random rnd = new Random();
-
 class Activity {
     string _name; // The thing
     string _description; // What it is
@@ -56,10 +54,10 @@ class BreathingActivity : Activity {
     }
 
 
-    public void Run(string userTime) {
-        DateTime.Parse(userTime);
+    public void Run(double userTime) {
+
         DateTime startTime = DateTime.Now;
-        DateTime endTime = startTime.Add(userTime);
+        DateTime endTime = startTime.AddSeconds(userTime);
 
         while (DateTime.Now < endTime){
             Console.WriteLine("\nBreathe in...");
@@ -83,40 +81,42 @@ class BreathingActivity : Activity {
 
         Console.WriteLine("That's the end of the breathing activity.");
 
-        }
     }
+}
 
 class ListingActivity : Activity {
+    Random _random;
     public ListingActivity () {
+        _random = new Random();
     }
 
-    public void Run(string userTime) {
-        DateTime.Parse(userTime);
+    public void Run(double userTime) {
+
         DateTime startTime = DateTime.Now;
-        DateTime endTime = startTime.Add(userTime);
+        DateTime endTime = startTime.AddSeconds(userTime);
 
         while (DateTime.Now < endTime){
 
         }
 
         Console.WriteLine("That's the end of the listing activity.");
+    }
+    public void GetRandomPrompt() {
+        return;
+    }
 
-        public void GetRandomPrompt() {
-            return;
-        }
-
-        public List<string> GetListFromUser() {
-            List<string> userlist = new List<string>{
-                "Who are people that you appreciate?",
-                "What are personal strengths of yours?",
-                "Who are people that you have helped this week?",
-                "When have you felt the Holy Ghost this month?",
-                "Who are some of your personal heroes?"
-            };
-            return userlist;
-        }
+    public List<string> GetListFromUser() {
+        List<string> userlist = new List<string>{
+            "Who are people that you appreciate?",
+            "What are personal strengths of yours?",
+            "Who are people that you have helped this week?",
+            "When have you felt the Holy Ghost this month?",
+            "Who are some of your personal heroes?"
+        };
+        return userlist;
     }
 }
+
 class ReflectingActivity : Activity {
     Random _random;
     List<string> _prompts = new List<string> {
@@ -146,7 +146,7 @@ class ReflectingActivity : Activity {
     }
 
     string GetRandomPrompt() {
-        return _prompts[0];
+        return _prompts[_random.Next(_prompts.Count)];
     }
 }
 
