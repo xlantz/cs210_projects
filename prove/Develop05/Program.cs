@@ -1,94 +1,151 @@
 using System;
-using System.IO.Enumeration;
-using System.Text.Json;
-public class GoalEntry
-{
-    //entry
-        public string Entry {get; set;}
+
+class Goal(){
+    protected string _shortName = "";
+    protected string _description = "";
+    protected int _points;
+
+    public Goal(string name, string description, int points){
+        this._shortName = name;
+        this._points = points;
+        this._description = description;
+    }
+
+    public virtual void RecordEvent(){
+        
+    }
+
+    public virtual bool IsComplete(){
+        return false;
+    }
+
+    public virtual string GetDetailsString(){
+        return "Goal Details";
+    }
+
+    public virtual string GetStringRepresentation(){
+        return "Goal";
+    }
 }
-class GoalManager{
-    public List <GoalEntry> goalEntries {get; set;}
 
-    public void SaveEntries(string filename)
-    {
-        try {
-                string jsonEntries = JsonSerializer.Serialize(goalEntries);
-                File.WriteAllText (filename, jsonEntries);
-            } 
+class SimpleGoal : Goal{
+    bool _isComplete;
 
-        catch (FileNotFoundException e) {
-                Console.WriteLine(e.ToString());
-            }
+    public SimpleGoal(string name, string description, int points){
+        _isComplete = false;
+        _shortName = name;
+        _description = description;
+        _points = points;
+    }
 
+    public override void RecordEvent(){
+        _isComplete = true;
+        return _points;
+    }
+
+    public override bool IsComplete(){
+        return _isComplete;
+    }
+
+    public override string GetStringRepresentation(){
+        return $"Simple Goal: {_shortName}";
+    }
+}
+
+class EternalGoal : Goal{
+    EternalGoal(string name, string description, int points){
 
     }
-    public void LoadEntries(string filename)
-    {
-        try {
-            var jsonIn = File.ReadAllText(filename);
-            goalEntries = JsonSerializer.Deserialize<List<GoalEntry>>(jsonIn);
-        } 
-        
-        catch (FileNotFoundException e) {
-            Console.WriteLine(e.ToString());
+    public override void RecordEvent(){
+        return _points;
+    }
+
+    public override bool IsComplete(){
+        return false;
+    }
+
+    public override string GetStringRepresentation(){
+        return $"Eternal Goal: {_shortName}";
+    }
+}
+
+class ChecklistGoal : Goal{
+    int _amountCompleted;
+    int _target;
+    int _bonus;
+
+    ChecklistGoal(string name, string description, int points, int target, int bonus){
+
+    }
+
+    public void RecordEvent(){
+        if (_amountCompleted < _target){
+            return _points;
+        }
+        else{
+            return _points + _bonus;
         }
     }
-    public void PrintAllEntries()
-    {
-        if (goalEntries.Count > 0)
-            foreach (GoalEntry ge in goalEntries)
-            {
-                Console.WriteLine($"Goals: {ge.Entry}\n");
-            }
-        else
-            Console.WriteLine ("There are no Goal Entries to print.");
+
+    public override bool IsComplete(){
+        if (_amountCompleted < _target){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    public override string getDetailsString(){
+        return "Checklist Goal Details";
+    }
+    public override string GetStringRepresentation(){
+        return "Checklist Goal";
+    }
+}
+
+class GoalManager : Goal{
+    private List<string> _goals = new List<string>{};
+    private int _score;
+
+    public GoalManager(){
+        _goals = new List<Goal>;
+        _goals.Add = new SimpleGoal();
+
+    }
+
+    public void Start(){
+
+    }
+
+    public void DisplayPlayerInfo(){
+
+    }
+
+    public void ListGoalNames(){
+
+    }
+
+    public void ListGoalDetails(){
+
+    }
+
+    public void CreateGoal(){
+
     }
 
     public void RecordEvent(){
 
     }
-}
 
-class Goal{
-    public void chooseGoal(){
-        Console.WriteLine("The types of goals are:\n");
-        Console.WriteLine("1.Simple Goal\n2.Eternal Goal\n3.Checklist Goal");
-        Console.Write("What type of goal would you like to create? ");
-        Console.Read();
-        Console.Write("What is the name of your goal? ");
-        Console.Read();
-        Console.Write("what is a short description of it? ");
-        Console.Read();
-        Console.Write("What is the amount of points associated with this goal? ");
-        Console.Read();
+    public void SaveGoals(){
+
     }
-}
-class SimpleGoal : Goal{
-    public void simpleGoal(){
-        chooseGoal();
+
+    public void LoadGoals(){
 
     }
 }
-class EternalGoal : Goal{
-    public void eternalGoal(){
-        chooseGoal();
-
-    }
-}
-class ChecklistGoal : Goal{
-    public void checklistGoal(){
-        chooseGoal();
-        Console.Write("How many times does this goal need to be accomplished? ");
-        Console.Write("What is the bonus for completing this goal? ");
-
-    }
-}
-class Program
-{
-    Goals myGoal = new()
-    {
-        goalEntries = new List<GoalEntry>()
-    };
+class Program{ 
     static void Main(string[] args)
     {
         string userEntry = "";
@@ -99,35 +156,34 @@ class Program
             Console.WriteLine("Menu options\n1.Create New Goal\n2.List Goals\n3.Save Goals\n4.Load Goals\n5.Record Event\n6.Quit\n");
             Console.Write("Please select an option from the menu: ");
             userEntry = Console.ReadLine();
-            GoalEntry ge;
+            
 
             //create new goal
             if(userEntry == "1"){
-                myGoal.listEntries.Add(ge);
+                
             }
             //list goals
             else if(userEntry == "2"){
-                myGoal.PrintAllEntries();
+                
             }
             //save goals
             else if(userEntry == "3"){
                 Console.WriteLine("What would you like to name the file? ");
                 string filename = Console.ReadLine();
-
-                myGoal.SaveEntries(filename);
+                
             }
             //load goals
             else if(userEntry == "4"){
                 Console.WriteLine("What file would you like to load? ");
                 string filename = Console.ReadLine();
 
-                myGoal.LoadEntries(filename);
             }
             //record event
             else if(userEntry == "5"){
 
             }
-            
-        }
+
+        }   
     }
+        
 }
