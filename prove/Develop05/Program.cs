@@ -1,14 +1,16 @@
 using System;
+using System.IO.Enumeration;
+using System.Text.Json;
 
 class Goal(){
     protected string _shortName = "";
     protected string _description = "";
     protected int _points;
 
-    public Goal(string name, string description, int points){
-        this._shortName = name;
-        this._points = points;
-        this._description = description;
+    public void Goal(string name, string description, int points){
+        _shortName = name;
+        _points = points;
+        _description = description;
     }
 
     public virtual void RecordEvent(){
@@ -20,7 +22,16 @@ class Goal(){
     }
 
     public virtual string GetDetailsString(){
-        return "Goal Details";
+        Console.WriteLine("The types of goals are:\n");
+        Console.WriteLine("1.Simple Goal\n2.Eternal Goal\n3.Checklist Goal");
+        Console.Write("What type of goal would you like to create? ");
+        Console.Read();
+        Console.Write("What is the name of your goal? ");
+        Console.Read();
+        Console.Write("what is a short description of it? ");
+        Console.Read();
+        Console.Write("What is the amount of points associated with this goal? ");
+        Console.Read();
     }
 
     public virtual string GetStringRepresentation(){
@@ -39,7 +50,6 @@ class SimpleGoal : Goal{
     }
 
     public override void RecordEvent(){
-        _isComplete = true;
         return _points;
     }
 
@@ -137,12 +147,26 @@ class GoalManager : Goal{
 
     }
 
-    public void SaveGoals(){
+    public void SaveGoals(string filename){
+        try {
+                string jsonEntries = JsonSerializer.Serialize(_goals);
+                File.WriteAllText (filename, jsonEntries);
+            } 
 
+        catch (FileNotFoundException e) {
+                Console.WriteLine(e.ToString());
+            }
     }
 
-    public void LoadGoals(){
-
+    public void LoadGoals(string filename){
+        try {
+            var jsonIn = File.ReadAllText(filename);
+            _goals = JsonSerializer.Deserialize<List<>>(jsonIn);
+        } 
+        
+        catch (FileNotFoundException e) {
+            Console.WriteLine(e.ToString());
+        }
     }
 }
 class Program{ 
