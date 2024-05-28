@@ -42,6 +42,11 @@ class Goal {
         _points = Convert.ToInt32(Console.ReadLine());
     }
 
+    /*
+    public virtual string GetJsonString(){
+        string rtnString = JsonSerializer.Serialize();
+    }
+    */
     public virtual string GetStringRepresentation() {
         string rtnString = "";
         if (IsComplete()){
@@ -77,6 +82,26 @@ class SimpleGoal: Goal{
         return _isComplete;
     }
 
+    /*
+    public override void GetDetails()
+    {
+        base.GetDetails();
+    }
+    */
+    /*
+    public override string GetStringRepresentation() {
+        string rtnString = "";
+        if (IsComplete()){
+            rtnString = "[X] ";
+        }
+        else {
+            rtnString = "[ ] ";
+        }
+
+        rtnString += $"{_shortName} ({_description})";
+        return rtnString;
+    }
+    */
 }
 
 class EternalGoal: Goal {
@@ -87,10 +112,36 @@ class EternalGoal: Goal {
         _points = points;
     }
 
+    /*
+    public override int RecordEvent() {
+        return _points;
+    }
+    */
+
     public override bool IsComplete() {
         return false;
     }
 
+    /*
+    public override void GetDetails()
+    {
+        base.GetDetails();
+    }
+    */
+    /*
+    public override string GetStringRepresentation () {
+        string rtnString = "";
+        if (IsComplete()){
+            rtnString = "[X] ";
+        }
+        else {
+            rtnString = "[ ] ";
+        }
+
+        rtnString += $"{_shortName} ({_description})";
+        return rtnString;
+    }
+    */
 }
 
 class ChecklistGoal: Goal {
@@ -137,9 +188,9 @@ class ChecklistGoal: Goal {
 
     public override void GetDetails() {
         base.GetDetails();
-        Console.Write ("How many times would you like to complete this goal? " );
+        Console.Write ("How many times do you need to complete this goal for a bonus?" );
         _target = Convert.ToInt32(Console.ReadLine());
-        Console.Write ("What is the bonus for completing this goal? ");
+        Console.Write ("What is the bonus for accomplishing it that many times? ");
         _bonus = Convert.ToInt32(Console.ReadLine());
     }
 }
@@ -155,6 +206,14 @@ class GoalManager {
     public int Score() {
         return _score;
     }
+
+    /*
+    public void Start() {
+    }
+
+    public void DisplayPlayerInfo() {
+    }
+    */
 
     public void ListGoals() {
         int count = 1;
@@ -196,7 +255,7 @@ class GoalManager {
             Console.WriteLine($"{count}. {goal.ShortName()}");
             count += 1;
         }
-        Console.Write("Which goal did you complete? ");
+        Console.Write("Which goal did you accomplish? ");
         // zero based...
         int goalId = Convert.ToInt32(Console.ReadLine()) - 1;
         Goal g = _goals[goalId];
@@ -210,8 +269,7 @@ class GoalManager {
         };
         string jsonEntries = "";
         try {
-            File.WriteAllText(filename, $"{_score}\n");
-            jsonEntries += JsonSerializer.Serialize(_goals, options);
+            jsonEntries += JsonSerializer.Serialize(this, options);
             File.WriteAllText (filename, jsonEntries);
         } 
 
@@ -223,10 +281,9 @@ class GoalManager {
     public void LoadGoals(string filename) {
         try {
             var jsonIn = File.ReadAllText(filename);
-            string[] jsonsplit = jsonIn.Split("[");
-            string jsonStr = "[" + jsonsplit[1];
-            _score = Convert.ToInt32(jsonsplit[0]);
-            _goals = JsonSerializer.Deserialize<List<Goal>>(jsonStr);
+            GoalManager lgm = JsonSerializer.Deserialize<GoalManager>(jsonIn);
+            _score = lgm._score;
+            _goals = lgm._goals;
         } 
         
         catch (FileNotFoundException e) {
