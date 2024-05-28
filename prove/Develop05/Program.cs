@@ -196,7 +196,7 @@ class GoalManager {
             Console.WriteLine($"{count}. {goal.ShortName()}");
             count += 1;
         }
-        Console.Write("Which goal did you accomplish? ");
+        Console.Write("Which goal did you complete? ");
         // zero based...
         int goalId = Convert.ToInt32(Console.ReadLine()) - 1;
         Goal g = _goals[goalId];
