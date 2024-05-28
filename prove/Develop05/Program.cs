@@ -140,7 +140,16 @@ class GoalManager : Goal{
     }
 
     public void CreateGoal(){
-
+        Console.WriteLine("The types of goals are:\n");
+        Console.WriteLine("1.Simple Goal\n2.Eternal Goal\n3.Checklist Goal");
+        Console.Write("What type of goal would you like to create? ");
+        Console.Read();
+        Console.Write("What is the name of your goal? ");
+        Console.Read();
+        Console.Write("what is a short description of it? ");
+        Console.Read();
+        Console.Write("What is the amount of points associated with this goal? ");
+        Console.Read();
     }
 
     public void RecordEvent(){
