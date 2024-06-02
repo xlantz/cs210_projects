@@ -130,7 +130,7 @@ public class Order{
     }
 
     public string GetShippingLabel(){
-        
+
         return $"{customer.GetName()}\n{customer.GetAddress().GetAddressString()}";
     }
 }
@@ -140,8 +140,8 @@ class Program
     static void Main(string[] args)
     {
 
-        Product product1 = new Product("Laptop", 1, 1200, 2);
-        Product product2 = new Product("Gimbal", 2, 130, 1);
+        Product product1 = new Product("Laptop", 1, 9845, 2);
+        Product product2 = new Product("Gimbal", 2, 79, 1);
 
         Address address1 = new Address("4000 S 4563 W", "Wonton", "CO", "USA");
         Address address2 = new Address("23 Tumpor", "Higgsville", "AL", "Canada");
@@ -156,7 +156,6 @@ class Program
         Order order2 = new Order(customer2);
         order2.AddProduct(product2);
 
-        // Displaying results
         Console.WriteLine("Order 1 Packing Label:");
         Console.WriteLine(order1.GetPackingLabel());
 
