@@ -111,11 +111,14 @@ public class Order{
     public double TotalCost(){
 
         double totalCost = 0;
+
         foreach (var product in products)
         {
             totalCost += product.GetTotalCost();
         }
+
         double shippingCost = customer.InUS() ? 5 : 35;
+        
         return totalCost + shippingCost;
     }
 
