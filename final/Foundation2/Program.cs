@@ -118,7 +118,7 @@ public class Order{
         }
 
         double shippingCost = customer.InUS() ? 5 : 35;
-        
+
         return totalCost + shippingCost;
     }
 
@@ -147,7 +147,7 @@ class Program
         Product product2 = new Product("Gimbal", 2, 79, 1);
 
         Address address1 = new Address("4000 S 4563 W", "Wonton", "CO", "USA");
-        Address address2 = new Address("23 Tumpor", "Higgsville", "AL", "Canada");
+        Address address2 = new Address("23 Tumpor", "Higgsville", "AB", "Canada");
 
         Customer customer1 = new Customer("Grand Wizard", address1);
         Customer customer2 = new Customer("Farn Swikh", address2);
